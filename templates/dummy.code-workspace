@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "dummy",
+			"path": ".."
+		},
+		{
+			"name": "static",
+			"path": "../../food/static"
+		}
+	],
+	"settings": {}
+}

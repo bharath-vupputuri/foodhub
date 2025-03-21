@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHub - Online Food Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
+</head>
+<body class="font-['DM_Sans'] bg-[#D9A3A3] ">
+
+  <header class="fixed top-0 left-0 right-0 bg-[#E5B3B3] shadow-sm z-50">
+    <nav class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <img src="static/logo.png" alt="FoodHub Logo" class="h-8">
+            </div>
+
+           
+
+            <!-- Buttons -->
+            <div class="flex items-center space-x-4">
+                <!-- Sign In Button (Login Page) -->
+                <a href="{{ url_for('login') }}" 
+                    class="bg-custom text-white px-6 py-2 rounded-lg hover:bg-opacity-90">
+                    Sign In
+                </a>
+
+                <!-- Sign Up Button (Registration Page) -->
+                <a href="{{ url_for('register') }}" 
+                    class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700">
+                    Sign Up
+                </a>
+            </div>
+        </div>
+    </nav>
+  </header>
+
+  <main class="mt-16 ">
+
+    <!-- Hero Section -->
+    <section class="relative bg-gray-900 h-[600px] overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="static/image 13.png" class="w-full h-full object-cover opacity-50">
+        </div>
+        <div class="relative max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+            <div class="max-w-2xl text-white">
+                <h1 class="text-5xl font-bold mb-6">Delicious Food Delivered To Your Doorstep</h1>
+                <p class="text-xl mb-8">Order from your favorite restaurants with free delivery on your first order</p>
+                <div class="flex items-center space-x-4 mb-8">
+                    <div class="bg-white p-3 rounded-button flex items-center flex-1">
+                        <i class="fas fa-map-marker-alt text-custom mr-3"></i>
+                        <input type="text" placeholder="Enter delivery address" class="w-full focus:outline-none text-gray-800">
+                    </div>
+                    <button onclick="window.location.href='register';"class="bg-custom px-8 py-3 !rounded-button hover:bg-opacity-90 whitespace-nowrap">Find Food</button>
+                </div>
+                <p class="flex items-center">
+                    <i class="fas fa-clock text-custom mr-2"></i>
+                    <span>Average delivery time: 30 minutes</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Categories -->
+    <section class="py-12 bg-[#D9A3A3]">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold mb-8">Popular Categories</h2>
+            <div class="flex space-x-6 overflow-x-auto pb-4">
+                <div class="flex flex-col items-center min-w-[120px] cursor-pointer">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-pizza-slice text-2xl text-custom"></i>
+                    </div>
+                    <span class="text-sm font-medium">Pizza</span>
+                </div>
+                <div class="flex flex-col items-center min-w-[120px] cursor-pointer">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-hamburger text-2xl text-custom"></i>
+                    </div>
+                    <span class="text-sm font-medium">Burgers</span>
+                </div>
+                <div class="flex flex-col items-center min-w-[120px] cursor-pointer">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-bowl-rice text-2xl text-custom"></i>
+                    </div>
+                    <span class="text-sm font-medium">Asian</span>
+                </div>
+                <div class="flex flex-col items-center min-w-[120px] cursor-pointer">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-ice-cream text-2xl text-custom"></i>
+                    </div>
+                    <span class="text-sm font-medium">Desserts</span>
+                </div>
+                <div class="flex flex-col items-center min-w-[120px] cursor-pointer">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-mug-hot text-2xl text-custom"></i>
+                    </div>
+                    <span class="text-sm font-medium">Coffee</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Restaurants -->
+    <section class="py-12 bg-[#D9A3A3]">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold mb-8">Featured Restaurants</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <img src="static\burger-image.png" class="w-full h-48 object-cover"/>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold">Burger House</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">4.8 ★</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">American • Fast Food</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>25-35 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <img src="static\pizza-image 8.png" class="w-full h-48 object-cover"/>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold">Pizza Paradise</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">4.6 ★</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Italian • Pizza</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>30-40 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <img src="static\sushi-image 9.png" class="w-full h-48 object-cover"/>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold">Sushi Master</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">4.9 ★</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Japanese • Sushi</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>35-45 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <img src="static\green-image 10.png" class="w-full h-48 object-cover"/>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold">Green Bowl</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">4.7 ★</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Healthy • Salads</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>20-30 min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><section class="py-12 bg-white">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold mb-8">Special Offers</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-custom to-red-600 rounded-lg p-6 text-white">
+                    <h3 class="text-xl font-bold mb-2">50% OFF</h3>
+                    <p class="mb-4">On your first order</p>
+                    <button class="bg-white text-custom px-6 py-2 !rounded-button">Order Now</button>
+                </div>
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white">
+                    <h3 class="text-xl font-bold mb-2">Free Delivery</h3>
+                    <p class="mb-4">Orders above $30</p>
+                    <button class="bg-white text-blue-500 px-6 py-2 !rounded-button">Order Now</button>
+                </div>
+                <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg p-6 text-white">
+                    <h3 class="text-xl font-bold mb-2">Special Combo</h3>
+                    <p class="mb-4">Save up to $15</p>
+                    <button class="bg-white text-purple-500 px-6 py-2 !rounded-button">Order Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold mb-12 text-center">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-custom bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-utensils text-3xl text-custom"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">Select Food</h3>
+                    <p class="text-gray-600">Choose from a wide variety of restaurants and cuisines</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-custom bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-clipboard-list text-3xl text-custom"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">Place Order</h3>
+                    <p class="text-gray-600">Customize your order and choose payment method</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-custom bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-truck text-3xl text-custom"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">Quick Delivery</h3>
+                    <p class="text-gray-600">Get your food delivered to your doorstep</p>
+                </div>
+            </div>
+        </div>
+    </section> <section class="py-12 bg-gray-900 text-white">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-8 md:mb-0">
+                    <h2 class="text-3xl font-bold mb-4">Download Our Mobile App</h2>
+                    <p class="text-gray-300 mb-6">Get the best food delivery experience on your phone</p>
+                    <div class="flex space-x-4">
+                        <button class="bg-black px-6 py-3 !rounded-button flex items-center">
+                            <i class="fab fa-apple text-2xl mr-2"></i>
+                            <div class="text-left">
+                                <div class="text-xs">Download on the</div>
+                                <div class="text-sm font-bold">App Store</div>
+                            </div>
+                        </button>
+                        <button class="bg-black px-6 py-3 !rounded-button flex items-center">
+                            <i class="fab fa-google-play text-2xl mr-2"></i>
+                            <div class="text-left">
+                                <div class="text-xs">Get it on</div>
+                                <div class="text-sm font-bold">Google Play</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <img src="static\bottom-image 11.png" class="max-w-sm">
+            </div>
+        </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-12">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <img src="static\logo.png" alt="FoodHub Logo" class="h-8 mb-4">
+                <p class="text-sm">The best food delivery experience you can get for your hunger needs.</p>
+            </div>
+            <div>
+                <h3 class="text-white font-bold mb-4">About</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white">About Us</a></li>
+                    <li><a href="#" class="hover:text-white">Careers</a></li>
+                    <li><a href="#" class="hover:text-white">Blog</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white font-bold mb-4">Support</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-white">FAQ</a></li>
+                    <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white font-bold mb-4">Follow Us</h3>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
+            <p>&copy; 2024 FoodHub. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

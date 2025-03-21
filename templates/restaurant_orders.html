@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>FoodDelivery - Register/Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
+</head>
+<body class="bg-[#D9A3A3] font-['Inter']">
+    <nav class="bg-[#E5B3B3] shadow-sm">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <img class="h-8 w-auto" src="static/logo.png" alt="Logo"/>
+                </div>
+                <div class="flex items-center space-x-4"><a href="{{ url_for('restaurant_review') }}" class="!rounded-button bg-custom hover:bg-custom/90 text-white px-4 py-2 text-sm font-medium">Restaurant Review </a></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="min-h-screen mb-20">
+        <div class="w-full max-w-7xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Restaurant Orders</h2>
+                <p class="mt-2 text-sm text-gray-600">Manage your restaurant orders</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-sm max-w-2xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold">Recent Orders</h3>
+                    <button class="bg-custom hover:bg-custom/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                        <i class="fas fa-filter mr-2"></i>Filter Orders
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h4 class="text-lg font-semibold">#ORD-2024001</h4>
+                                <p class="text-sm text-gray-600">March 15, 2024 - 2:30 PM</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">Completed</span>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between"><span class="text-gray-600">2x Classic Burger</span><span class="font-medium">$25.98</span></div>
+                            <div class="flex justify-between"><span class="text-gray-600">1x Caesar Salad</span><span class="font-medium">$8.99</span></div>
+                        </div>
+                        <div class="border-t pt-3">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold">Total</span>
+                                <span class="text-lg font-bold">$34.97</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h4 class="text-lg font-semibold">#ORD-2024002</h4>
+                                <p class="text-sm text-gray-600">March 15, 2024 - 2:15 PM</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">In Progress</span>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between"><span class="text-gray-600">1x Margherita Pizza</span><span class="font-medium">$15.99</span></div>
+                            <div class="flex justify-between"><span class="text-gray-600">1x Greek Salad</span><span class="font-medium">$9.99</span></div>
+                        </div>
+                        <div class="border-t pt-3">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold">Total</span>
+                                <span class="text-lg font-bold">$25.98</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-[#E5B3B3] py-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex justify-center space-x-8">
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Privacy Policy</a>
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Terms of Service</a>
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Help Center</a>
+            </nav>
+        </div>
+    </footer>
+</body>
+</html>

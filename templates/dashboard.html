@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodDelivery - Filter & Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#D9A3A3] font-inter">
+
+    <!-- Navbar -->
+    <nav class="bg-[#D9A3A3] shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <img class="h-8" src="static/logo.png" alt="Logo">
+            <div class="flex space-x-6">
+                                <!-- Add Chat Button -->
+                <!-- Add Bot Button with onclick for Navigation to chat.html -->
+                <a href="{{ url_for('chatbot') }}" class="text-gray-700 hover:text-red-600">
+                    <i class="fas fa-robot text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-700 hover:text-red-600"><i class="fas fa-heart text-xl"></i></a>
+                <a href="{{ url_for('cart') }}" class="text-gray-700 hover:text-red-600"><i class="fas fa-shopping-cart text-xl"></i></a>
+                <a href="#" class="text-gray-700 hover:text-red-600"><i class="fas fa-user text-xl"></i></a>
+
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Filter & Search Section -->
+    <div class="max-w-7xl mx-auto px-6 py-6">
+        <div class="flex flex-wrap gap-2 mb-4">
+            <button class="filter-btn bg-red-500 text-white px-4 py-2 rounded-lg" data-category="all">All Items</button>
+            <button class="filter-btn bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg" data-category="pizza">Pizza</button>
+            <button class="filter-btn bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg" data-category="burger">Burgers</button>
+            <button class="filter-btn bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg" data-category="sushi">Sushi</button>
+            <button class="filter-btn bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg" data-category="salad">Salads</button>
+        </div>
+
+        <div class="w-full max-w-7xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">FoodDelivery</h2>
+                <p class="mt-2 text-sm text-gray-600">Explore and order your favorite dishes</p>
+            </div>
+        </div>
+
+        <!-- Food Items -->
+        <div class="max-w-7xl mx-auto px-6 mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for item in menu_items %}
+            <div class="food-item bg-white rounded-lg shadow-lg p-4" data-category="{{ item.group_type }}">
+                <img src="{{ item.image }}" class="w-full h-48 object-cover rounded-lg mb-4 hover:opacity-90 transition-opacity" alt="{{ item.name }}">
+                <h3 class="text-lg font-semibold mt-3">{{ item.name }}</h3>
+                <p class="text-sm text-gray-600">{{ item.group_type }}</p>
+                <div class="flex justify-between items-center mt-4">
+                    <span class="text-xl font-bold">${{ item.price }}</span>
+                    <form action="{{ url_for('add_to_cart', item_id=item.item_id) }}" method="post">
+                        <button type="submit" class="add-to-cart bg-red-500 text-white px-4 py-2 rounded-lg text-sm">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="bg-[#C5C0C0]">
+        <div class="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <nav class="flex justify-center space-x-8">
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Privacy Policy</a>
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Terms of Service</a>
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Help Center</a>
+            </nav>
+        </div>
+    </footer>
+
+</body>
+</html>
