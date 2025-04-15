@@ -458,4 +458,4 @@ if __name__ == '__main__':
             db.create_all()
             logger.info('Database initialized successfully!')
     logger.info('Starting Flask application...')
-    app.run(debug=True)
+    app.run(debug=True) 
