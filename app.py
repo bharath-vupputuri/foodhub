@@ -11,7 +11,7 @@ from datetime import datetime
 import google.generativeai as genai
 
 
-GEMINI_API_KEY = "AIzaSyBkCxP-RwWc4-qqBfFvJ9HKxlBLlgN4g2w"  
+GEMINI_API_KEY = "AIzaSyBkCxP-RwWc4-qqBfFvJ9HKxlBLlgN4g2w"
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
