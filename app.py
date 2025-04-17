@@ -451,11 +451,18 @@ def home():
     return render_template('home.html', user=current_user)
 
 
-# Create Database Tables if They Don't Exist
+def initialize_database():
+    if not os.path.exists('users.db'):
+        db.create_all()
+        logger.info('Database created and tables initialized.')
+    else:
+        logger.info('Database already exists.')
+
+def run_app():
+    logger.info('Launching Flask application...')
+    app.run(debug=True)
+
 if __name__ == '__main__':
-    if not os.path.exists("users.db"):
-        with app.app_context():
-            db.create_all()
-            logger.info('Database initialized successfully!')
-    logger.info('Starting Flask application...')
-    app.run(debug=True) 
+    with app.app_context():
+        initialize_database()
+    run_app()
