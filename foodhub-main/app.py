@@ -752,7 +752,7 @@ def restaurant_settings():
                 settings.closing_time = form.closing_time.data
                 settings.minimum_order_amount = form.minimum_order_amount.data
                 settings.delivery_radius = form.delivery_radius.data
-            else:
+            else:   
                 # Create new settings
                 new_settings = RestaurantSettings(
                     user_id=current_user.id,
