@@ -851,53 +851,6 @@ def remove_from_cart(cart_id):
     return redirect(url_for('cart'))
 
 # Create Database Tables if They Don't Exist
-# New Personal Details Route
-@app.route('/personal_details', methods=['GET', 'POST'])
-@login_required
-def personal_details():
-    form = PersonalDetailsForm()
-    user = User.query.get(current_user.id)
-    
-    if request.method == 'POST' and form.validate_on_submit():
-        try:
-            # Check if email or phone is already taken by another user
-            existing_email = User.query.filter(User.email == form.email.data.lower(), User.id != user.id).first()
-            existing_phone = User.query.filter(User.phone == form.phone.data, User.id != user.id).first()
-            
-            if existing_email:
-                flash('This email is already registered.', 'danger')
-                return render_template('personal_details.html', form=form)
-            
-            if existing_phone:
-                flash('This phone number is already registered.', 'danger')
-                return render_template('personal_details.html', form=form)
-            
-            # Update user details
-            user.name = form.name.data
-            user.email = form.email.data.lower()
-            user.phone = form.phone.data
-            db.session.commit()
-            flash('Personal details updated successfully!', 'success')
-            return redirect(url_for('personal_details'))
-        except Exception as e:
-            db.session.rollback()
-            logger.error(f'Error updating personal details: {e}')
-            flash('An error occurred while updating your details.', 'danger')
-    
-    # Populate form with current user details for GET request
-    form.name.data = user.name
-    form.email.data = user.email
-    form.phone.data = user.phone
-    
-    return render_template('personal_details.html', form=form)
-# New Personal Details Form
-class PersonalDetailsForm(FlaskForm):
-    name = StringField('Full Name', validators=[InputRequired(), Length(min=4, max=50)])
-    email = StringField('Email', validators=[InputRequired(), Email(), Length(max=100)])
-    phone = StringField('Phone Number', validators=[
-        InputRequired(), Length(min=10, max=15), Regexp(r'^\d+$', message="Phone number must contain only digits.")
-    ])
-    submit = SubmitField('Save Changes')
 if __name__ == '__main__':
     if not os.path.exists("users.db"):
         with app.app_context():
