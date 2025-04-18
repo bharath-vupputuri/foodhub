@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodDelivery - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-['Inter'] h-screen flex flex-col">
+    <script>
+        function setRole(role) {
+            document.getElementById('role').value = role;
+            document.getElementById('selectedRole').innerText = role.charAt(0).toUpperCase() + role.slice(1);
+        }
+    </script>
+
+    <!-- Navbar -->
+    <nav class="bg-[#E5B3B3] shadow-sm">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <img class="h-8 w-auto" src="static/logo.png" alt="Logo">
+                </div>
+                <div class="flex items-center space-x-4">
+                    
+                    <a href="{{ url_for('login') }}" class="text-custom hover:text-custom/90 px-4 py-2 text-sm font-medium">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="flex flex-1">
+        
+        <!-- Login Section -->
+        <div class="w-full md:w-1/2 flex flex-col justify-center items-center bg-[#D9A3A3] px-8 py-12">
+            <div class="max-w-sm w-full">
+                <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900">Create an Account</h2>
+                    <p class="mt-2 text-sm text-gray-600">choose your account type to get started</p>
+                </div>
+
+                <form method="POST" class="space-y-4">
+                  {{ form.hidden_tag() }}
+                  <div class="grid grid-cols-2 gap-4 mb-8">
+                      <button type="button" class="border-2 border-gray-200 p-4 rounded-lg text-center hover:border-custom"
+                          onclick="setRole('customer')">
+                          <i class="fas fa-user text-2xl text-gray-700 mb-2"></i>
+                          <span class="block text-sm font-medium text-gray-900">Customer</span>
+                      </button>
+                      <button type="button" class="border-2 border-gray-200 p-4 rounded-lg text-center hover:border-custom"
+                          onclick="setRole('restaurant')">
+                          <i class="fas fa-store text-2xl text-gray-700 mb-2"></i>
+                          <span class="block text-sm font-medium text-gray-900">Restaurant</span>
+                      </button>
+                  </div>
+
+                  {{ form.role(id="role", value="customer") }}
+                  <p class="text-gray-600 text-sm">Selected Role: <span id="selectedRole" class="font-semibold">Customer</span></p>
+
+                  <div>
+                      <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                      {{ form.name(class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm") }}
+                  </div>
+  
+                  <div>
+                      <label class="block text-sm font-medium text-gray-700">Email Address</label>
+                      {{ form.email(class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm") }}
+                  </div>
+  
+                  <div>
+                      <label class="block text-sm font-medium text-gray-700">Phone Number</label>
+                      {{ form.phone(class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm") }}
+                  </div>
+  
+                  <div>
+                      <label class="block text-sm font-medium text-gray-700">Password</label>
+                      {{ form.password(class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm") }}
+                  </div>
+
+                  <div>
+                      <button type="submit" class="block w-full bg-[#E5B3B3] text-black py-2 px-4 rounded-md hover:bg-[#D9A3A3]">
+                          Create Account
+                      </button>
+                  </div>
+              </form>
+
+                <!-- Register Link -->
+                
+            </div>
+        </div>
+    </div>
+    <div class="w-full md:w-1/2 flex flex-col justify-center items-center bg-[#D9A3A3] px-8 py-12">
+    <div class="w-full max-w-md bg-white  rounded-lg shadow-md">
+   
+        <!-- Image Section -->
+        <!-- <div class="hidden md:flex w-1/2"> -->
+            <img class="w-full h-full object-cover" src="static/login.png" alt="Food imagery">
+        <!--</div> -->
+        
+    </div>
+</div>
+</div>
+    <!-- Footer -->
+    <footer class="bg-[#C5C0C0] py-4">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex justify-center space-x-8">
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Privacy Policy</a>
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Terms of Service</a>
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Help Center</a>
+            </nav>
+        </div>
+    </footer>
+
+</body>
+</html>

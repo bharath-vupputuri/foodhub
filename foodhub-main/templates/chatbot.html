@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Chatbot</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        #chat-history {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            max-width: 80%;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow-wrap: break-word; /* Modern property for word wrap */
+            word-wrap: break-word; /* Legacy support */
+            word-break: break-all; /* Optional: breaks very long words */
+            white-space: pre-wrap; /* Preserves whitespace and wraps text */
+        }
+        .user {
+            background-color: #DCF8C6;
+            align-self: flex-end;
+        }
+        .bot {
+            background-color: #FFFFFF;
+            align-self: flex-start;
+            border: 1px solid #ccc;
+        }
+        #input-area {
+            display: flex;
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        #send-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #send-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-history"></div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button" disabled>Send</button>
+        </div>
+    </div>
+    <script>
+        // Enable/disable send button based on input
+        document.getElementById('user-input').addEventListener('input', function() {
+            var sendButton = document.getElementById('send-button');
+            sendButton.disabled = this.value.trim() === '';
+        });
+
+        // Send message on Enter key press
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !document.getElementById('send-button').disabled) {
+                sendMessage();
+            }
+        });
+
+        // Send message on button click
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+
+        // Function to append a message to the chat history
+        function appendMessage(text, sender) {
+            var messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            messageDiv.textContent = text;
+            document.getElementById('chat-history').appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Function to scroll chat history to the bottom
+        function scrollToBottom() {
+            var chatHistory = document.getElementById('chat-history');
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // Function to send the message to the server
+        function sendMessage() {
+            var userInput = document.getElementById('user-input');
+            var message = userInput.value.trim();
+            if (message) {
+                appendMessage(message, 'user');
+                userInput.value = '';
+                userInput.focus();
+
+                // Send POST request to Flask /chat route
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'message=' + encodeURIComponent(message),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    appendMessage(data.response, 'bot');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    appendMessage('Sorry, there was an error.', 'bot');
+                });
+            }
+        }
+
+        // Display welcome message and focus input on page load
+        appendMessage('Hello! How can I assist you today?', 'bot');
+        document.getElementById('user-input').focus();
+    </script>
+</body>
+</html>
