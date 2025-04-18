@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 # Flask App Configuration
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://food_axf0_user:5vh2fKYWiKV6T0F8PtkYIhrga4iMVPBU@dpg-d019l6ili9vc73875m70-a.oregon-postgres.render.com/food_axf0'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://food_axf0_user:5vh2fKYWiKV6T0F8PtkYIhrga4iMVPBU@dpg-d019l6ili9vc73875m70-a/food_axf0'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
