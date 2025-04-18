@@ -195,31 +195,46 @@ def restaurant_orders():
         flash('Access denied. Restaurant role required.', 'danger')
         return redirect(url_for('dashboard'))
 
-    # Query all orders with their items and user details
-    orders = PlacedOrders.query.join(User).join(MenuItem).order_by(PlacedOrders.order_date.desc()).all()
+    # Query orders for this restaurant
+    orders = (
+        PlacedOrders.query
+        .join(MenuItem, PlacedOrders.item_id == MenuItem.item_id)
+        .join(User, PlacedOrders.user_id == User.id)
+        .filter(MenuItem.restaurant_id == current_user.id)
+        .order_by(PlacedOrders.order_date.desc())
+        .all()
+    )
+    logger.debug(f"Retrieved {len(orders)} orders for restaurant ID {current_user.id}")
 
-    # Group orders by order_id (assuming each order_id is unique per item entry)
+    # Handle empty orders
+    if not orders:
+        return render_template('restaurant_orders.html', orders=[])
+
+    # Group orders by order_id
     grouped_orders = {}
     for order in orders:
-        order_key = order.order_id  # Use order_id as the key
+        order_key = order.order_id
         if order_key not in grouped_orders:
-            # Determine status based on order age (simplified logic)
-            status = 'Completed' if (datetime.utcnow() - order.order_date) > timedelta(hours=1) else 'In Progress'
+            time_diff = datetime.utcnow() - order.order_date
+            if time_diff > timedelta(hours=2):
+                status = 'Delivered'
+            elif time_diff > timedelta(hours=1):
+                status = 'Delivering'
+            else:
+                status = 'Preparing'
             grouped_orders[order_key] = {
                 'order_id': order.order_id,
                 'customer_name': order.user.name,
                 'order_date': order.order_date,
-                'order_items': [],  # Changed from 'items' to 'order_items'
+                'order_items': [],
                 'total': 0.0,
                 'status': status
             }
-        # Add item details
-        grouped_orders[order_key]['order_items'].append({  # Changed to 'order_items'
+        grouped_orders[order_key]['order_items'].append({
             'name': order.item.name,
             'quantity': order.quantity,
             'price': order.item.price
         })
-        # Update total
         grouped_orders[order_key]['total'] += order.item.price * order.quantity
 
     # Convert to list for template rendering
