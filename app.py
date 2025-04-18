@@ -393,8 +393,28 @@ def restaurant_dashboard():
         flash('Access denied. Restaurant role required.', 'danger')
         return redirect(url_for('dashboard'))
 
-    # Query orders
-    orders = PlacedOrders.query.join(User).join(MenuItem).order_by(PlacedOrders.order_date.desc()).all()
+    # Query orders for this restaurant
+    orders = (
+        PlacedOrders.query
+        .join(MenuItem, PlacedOrders.item_id == MenuItem.item_id)
+        .join(User, PlacedOrders.user_id == User.id)
+        .filter(MenuItem.restaurant_id == current_user.id)
+        .order_by(PlacedOrders.order_date.desc())
+        .all()
+    )
+    logger.debug(f"Retrieved {len(orders)} orders for restaurant ID {current_user.id}")
+
+    # Handle empty orders
+    if not orders:
+        return render_template('restaurant_dashboard.html',
+                             total_orders=0,
+                             revenue=0.0,
+                             average_rating=0.0,
+                             active_orders=0,
+                             active_breakdown={'preparing': 0, 'delivering': 0},
+                             recent_orders=[],
+                             orders_change="+0%",
+                             revenue_change="+0%")
 
     # Group orders by order_id for recent orders
     grouped_orders = {}
@@ -436,7 +456,7 @@ def restaurant_dashboard():
         'delivering': sum(1 for order in grouped_orders.values() if order['status'] == 'Delivering')
     }
 
-    # Average rating from reviews for orders linked to the restaurant
+    # Average rating from reviews
     reviews = (
         Review.query
         .join(PlacedOrders, Review.order_id == PlacedOrders.order_id)
