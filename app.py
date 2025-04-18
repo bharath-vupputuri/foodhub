@@ -123,7 +123,13 @@ class RegisterForm(FlaskForm):
     role = HiddenField('Role', validators=[InputRequired()])
     submit = SubmitField('Register')
 
-
+class PersonalDetailsForm(FlaskForm):
+    name = StringField('Full Name', validators=[InputRequired(), Length(min=4, max=50)])
+    email = StringField('Email', validators=[InputRequired(), Email(), Length(max=100)])
+    phone = StringField('Phone Number', validators=[
+        InputRequired(), Length(min=10, max=15), Regexp(r'^\d+$', message="Phone number must contain only digits.")
+    ])
+    submit = SubmitField('Save Changes')
 # Login Form
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(), Email(), Length(max=100)])
