@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>FoodDelivery - Submit Feedback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
+</head>
+<body class="bg-[#D9A3A3] font-['Inter']">
+    {% include 'navbar.html' %}
+
+    <div class="min-h-screen mb-20">
+        <div class="w-full max-w-7xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Submit Feedback</h2>
+                <p class="mt-2 text-sm text-gray-600">Share your experience for Order #ORD-{{ order_id }}</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-sm max-w-md mx-auto">
+                <form method="POST" action="{{ url_for('submit_feedback', order_id=order_id) }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="{{ form.rating.id }}">Rating (1-5)</label>
+                        {{ form.rating(class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom") }}
+                        {% if form.rating.errors %}
+                            {% for error in form.rating.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="{{ form.comment.id }}">Comment (Optional)</label>
+                        {{ form.comment(class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom", rows=4) }}
+                        {% if form.comment.errors %}
+                            {% for error in form.comment.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="flex justify-end">
+                        {{ form.submit(class="bg-custom hover:bg-custom/90 text-white px-6 py-2 rounded-lg text-sm font-medium") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-[#E5B3B3] py-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex justify-center space-x-8">
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Privacy Policy</a>
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Terms of Service</a>
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Help Center</a>
+            </nav>
+        </div>
+    </footer>
+</body>
+</html>

@@ -3,27 +3,15 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FoodDelivery - Register/Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <title>FoodDelivery - Restaurant Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
     <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
 </head>
 <body class="bg-[#D9A3A3] font-['Inter'] flex flex-col min-h-screen">
-    <nav class="bg-[#E5B3B3] shadow-sm">
-        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex-shrink-0 flex items-center">
-                    <img class="h-8 w-auto" src="static/logo.png" alt="Logo"/>
-                </div>
-                
-                <div class="flex items-center space-x-4">
-                    <a href="{{ url_for('restaurant_orders') }}" class="!rounded-button bg-custom hover:bg-custom/90 text-white px-4 py-2 text-sm font-medium">Restaurant Orders</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    {% include 'navbar.html' %}
 
     <main class="flex-grow w-full max-w-7xl mx-auto">
         <div class="text-center mb-8">
@@ -34,9 +22,9 @@
         <div class="bg-white p-6 rounded-lg shadow-sm max-w-2xl mx-auto">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-semibold">Menu Items</h3>
-                <button onclick="window.location.href='restaurant_additem';" class="bg-custom hover:bg-custom/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                <a href="{{ url_for('restaurant_additem') }}" class="bg-custom hover:bg-custom/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
                     <i class="fas fa-plus mr-2"></i> Add New Item
-                </button>
+                </a>
             </div>
 
             <!-- Display Menu Items -->

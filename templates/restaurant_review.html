@@ -1,50 +1,69 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FoodDelivery - Register/Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <title>FoodDelivery - Restaurant Reviews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
     <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
 </head>
-<body class="bg-[#D9A3A3] font-[&#39;Inter&#39;]">
-    <nav class="bg-[#E5B3B3] shadow-sm">
-        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex-shrink-0 flex items-center">
-                    <img class="h-8 w-auto" src="static\logo.png" alt="Logo"/>
+<body class="bg-[#D9A3A3] font-['Inter']">
+    {% include 'navbar.html' %}
+
+    <div class="min-h-screen mb-20">
+        <div class="w-full max-w-7xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Restaurant Reviews</h2>
+                <p class="mt-2 text-sm text-gray-600">View customer feedback for your restaurant</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-sm max-w-2xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold">Customer Reviews</h3>
+                    <div class="text-sm text-gray-600">
+                        Average Rating: {{ '%.1f' % average_rating }} / 5 ({{ review_count }} reviews)
+                    </div>
                 </div>
-                <div class="flex items-center space-x-4"><a href="{{ url_for('restaurant_settings') }}" class="!rounded-button bg-custom hover:bg-custom/90 text-white px-4 py-2 text-sm font-medium">Restaurant Settings </a></div>
+
+                {% if reviews %}
+                <div class="space-y-6">
+                    {% for review in reviews %}
+                    <div class="border-b pb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <h4 class="text-lg font-semibold">{{ review.user.name }}</h4>
+                                <p class="text-sm text-gray-600">{{ review.review_date.strftime('%B %d, %Y - %I:%M %p') }}</p>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">{{ '★' * review.rating }}{{ '☆' * (5 - review.rating) }}</span>
+                            </div>
+                        </div>
+                        {% if review.comment %}
+                        <p class="text-gray-600">{{ review.comment }}</p>
+                        {% else %}
+                        <p class="text-gray-500 italic">No comment provided.</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-center text-gray-600">No reviews found.</p>
+                {% endif %}
             </div>
         </div>
-    </nav>
-
-    
-            <div class="w-full max-w-7xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold text-gray-900">Restaurant Reviews</h2>
-                    <p class="mt-2 text-sm text-gray-600">See what customers are saying about your restaurant</p>
-                </div>
-
-                
-
-                
-
-                
-            <div class="bg-white p-6 rounded-lg shadow-sm max-w-2xl mx-auto" style=""><div class="flex justify-between items-center mb-6"><h3 class="text-xl font-semibold">Customer Reviews</h3><div class="flex items-center"><span class="text-xl font-bold mr-2">4.8</span><div class="flex text-yellow-400"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div><span class="ml-2 text-gray-600">(128 reviews)</span></div></div><div class="space-y-6"><div class="border-b pb-6"><div class="flex items-start"><div class="flex-1"><div class="flex items-center mb-1"><h4 class="font-medium mr-2">Sarah Johnson</h4><div class="flex text-yellow-400"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div></div><p class="text-gray-600 text-sm mb-2">March 15, 2024</p><p class="text-gray-800">Amazing food and quick delivery! The burger was perfectly cooked and the fries were still crispy when they arrived. Will definitely order again!</p></div></div></div><div class="border-b pb-6"><div class="flex items-start"><div class="flex-1"><div class="flex items-center mb-1"><h4 class="font-medium mr-2">Mike Smith</h4><div class="flex text-yellow-400"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div></div><p class="text-gray-600 text-sm mb-2">March 14, 2024</p><p class="text-gray-800">Great service and tasty food. The salad was fresh and the portion size was generous. Only small issue was the delivery took a bit longer than expected.</p></div></div></div><div class="border-b pb-6"><div class="flex items-start"><div class="flex-1"><div class="flex items-center mb-1"><h4 class="font-medium mr-2">Emily Chen</h4><div class="flex text-yellow-400"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div></div><p class="text-gray-600 text-sm mb-2">March 13, 2024</p><p class="text-gray-800">Outstanding experience! The pasta was cooked to perfection and the service was excellent. The packaging was also eco-friendly which I really appreciate.</p></div></div></div></div><div class="flex justify-center mt-6"><button class="text-custom hover:text-custom/90 font-medium flex items-center"><span>Load More Reviews</span><i class="fas fa-chevron-down ml-2"></i></button></div></div><div class="space-y-4 mb-8" style="display: none;"><div class="bg-white rounded-lg shadow-sm p-6"><div class="mb-6"><div class="relative w-full h-[400px] rounded-lg overflow-hidden"><div class="absolute top-4 left-4 bg-white p-3 rounded-lg shadow-md"><div class="flex items-center space-x-3"><img src="https://ai-public.creatie.ai/gen_page/delivery-avatar.png" alt="Delivery Partner" class="w-12 h-12 rounded-full"/><div><p class="font-medium">John Smith</p><p class="text-sm text-gray-600">Your Delivery Partner</p></div></div><div class="mt-2"><div class="flex items-center text-sm text-gray-600"><i class="fas fa-motorcycle mr-2"></i>10 minutes away</div><div class="flex items-center text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt mr-2"></i>2.5 km from your location</div></div></div></div></div><div class="flex justify-between items-center"><button class="bg-custom hover:bg-custom/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"><i class="fas fa-phone mr-2"></i>Call Driver</button><button class="border border-custom text-custom hover:bg-custom/10 px-4 py-2 rounded-lg text-sm font-medium flex items-center"><i class="fas fa-comment mr-2"></i>Send Message</button></div></div></div></div>
-        </div>
-        
     </div>
 
-    <footer class="bg-[#E5B3B3]">
-        <div class="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <footer class="bg-[#E5B3B3] py-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav class="flex justify-center space-x-8">
                 <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Privacy Policy</a>
                 <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Terms of Service</a>
                 <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Help Center</a>
             </nav>
         </div>
-      </footer>
-</body></html>
+    </footer>
+</body>
+</html>

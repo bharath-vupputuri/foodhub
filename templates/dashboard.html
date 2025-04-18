@@ -13,30 +13,27 @@
     <!-- Navbar -->
     <nav class="bg-[#D9A3A3] shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <img class="h-8" src="static/logo.png" alt="Logo">
+            <img class="h-8" src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
             <div class="flex space-x-6">
-                                <!-- Add Chat Button -->
-                <!-- Add Bot Button with onclick for Navigation to chat.html -->
+                <!-- Add Chat Button -->
                 <a href="{{ url_for('chatbot') }}" class="text-gray-700 hover:text-red-600">
                     <i class="fas fa-robot text-xl"></i>
                 </a>
                 <a href="#" class="text-gray-700 hover:text-red-600"><i class="fas fa-heart text-xl"></i></a>
                 <a href="{{ url_for('cart') }}" class="text-gray-700 hover:text-red-600"><i class="fas fa-shopping-cart text-xl"></i></a>
-                <a href="#" class="text-gray-700 hover:text-red-600"><i class="fas fa-user text-xl"></i></a>
-
-                </a>
+                <a href="{{ url_for('view_orders') }}" class="rounded-button px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700">Orders</a>
+                <a href="{{ url_for('logout') }}" class="rounded-button px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700">Logout</a>
             </div>
         </div>
     </nav>
-    
+
     <!-- Filter & Search Section -->
     <div class="max-w-7xl mx-auto px-6 py-6">
         <div class="flex flex-wrap gap-2 mb-4">
             <button class="filter-btn bg-red-500 text-white px-4 py-2 rounded-lg" data-category="all">All Items</button>
-            <button class="filter-btn bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg" data-category="pizza">Pizza</button>
-            <button class="filter-btn bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg" data-category="burger">Burgers</button>
-            <button class="filter-btn bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg" data-category="sushi">Sushi</button>
-            <button class="filter-btn bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg" data-category="salad">Salads</button>
+            {% for group_type in group_types %}
+            <button class="filter-btn bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg" data-category="{{ group_type }}">{{ group_type }}</button>
+            {% endfor %}
         </div>
 
         <div class="w-full max-w-7xl mx-auto">

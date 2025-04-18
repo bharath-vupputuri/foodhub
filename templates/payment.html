@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FoodDelivery - Register/Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <title>FoodDelivery - Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
     <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
 </head>
-<body class="bg-[#D9A3A3] font-[&#39;Inter&#39;]">
+<body class="bg-[#D9A3A3] font-['Inter']">
     <nav class="bg-[#E5B3B3] shadow-sm">
         <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex-shrink-0 flex items-center">
-                    <img class="h-8 w-auto" src="static\logo.png" alt="Logo"/>
+                    <img class="h-8 w-auto" src="static/logo.png" alt="Logo"/>
                 </div>
                 <div class="flex items-center space-x-6">
                     <a href="#" class="text-gray-600 hover:text-custom">
@@ -69,16 +69,15 @@
                                 <i class="fas fa-qrcode text-2xl text-custom"></i>
                             </div>
                             <div class="flex flex-col items-center justify-center space-y-4">
-                                <img src="dummy\static\qr code.png" alt="QR Code" class="w-48 h-48"/>
+                                <img src="static/qr_code.png" alt="QR Code" class="w-48 h-48"/>
                                 <p class="text-sm text-gray-600">Scan with your mobile payment app</p>
                             </div>
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end">
-                      <a href="{{ url_for('delivery_tracking') }}">
-                        <button class="bg-custom hover:bg-custom/90 text-white px-6 py-2 rounded-lg text-sm font-medium">Confirm Payment</button>
-                      </a>
-
+                        <form action="{{ url_for('payment') }}" method="post">
+                            <button type="submit" class="bg-custom hover:bg-custom/90 text-white px-6 py-2 rounded-lg text-sm font-medium">Confirm Payment</button>
+                        </form>
                     </div>
                 </div>
             </div>

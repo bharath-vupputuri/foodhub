@@ -1,42 +1,126 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FoodDelivery - Register/Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <title>FoodDelivery - Restaurant Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
     <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
 </head>
-<body class="bg-[#D9A3A3] font-[&#39;Inter&#39;]">
-    <nav class="bg-[#E5B3B3] shadow-sm">
-        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex-shrink-0 flex items-center">
-                    <img class="h-8 w-auto" src="static\logo.png" alt="Logo"/>
-                </div>
-                <div class="flex items-center space-x-4"><a href="{{ url_for('restaurant_menu') }}" class="!rounded-button bg-custom hover:bg-custom/90 text-white px-4 py-2 text-sm font-medium">Restaurant Menu </a></div>
-            </div>
-        </div>
-    </nav>
+<body class="bg-[#D9A3A3] font-['Inter']">
+    {% include 'navbar.html' %}
 
     <div class="min-h-screen">
-        
-            <div class="w-full max-w-7xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold text-gray-900">Restaurant Dashboard</h2>
-                    <p class="mt-2 text-sm text-gray-600">Manage your restaurant orders and performance</p>
+        <div class="w-full max-w-7xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Restaurant Dashboard</h2>
+                <p class="mt-2 text-sm text-gray-600">Manage your restaurant orders and performance</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-sm max-w-2xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-2">Total Orders</h3>
+                        <p class="text-3xl font-bold text-custom">{{ total_orders }}</p>
+                        <p class="text-sm text-gray-600 mt-2">{{ orders_change }} from last week</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-2">Revenue</h3>
+                        <p class="text-3xl font-bold text-custom">${{ '%.2f' % revenue }}</p>
+                        <p class="text-sm text-gray-600 mt-2">{{ revenue_change }} from last week</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-2">Average Rating</h3>
+                        <p class="text-3xl font-bold text-custom">{{ '%.1f' % average_rating }}</p>
+                        <div class="flex text-yellow-400 mt-2">
+                            {% for i in range(5) %}
+                                {% if i < average_rating|round %}
+                                    <i class="fas fa-star"></i>
+                                {% elif i < average_rating|round(1) %}
+                                    <i class="fas fa-star-half-alt"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-2">Active Orders</h3>
+                        <p class="text-3xl font-bold text-custom">{{ active_orders }}</p>
+                        <p class="text-sm text-gray-600 mt-2">{{ active_breakdown.preparing }} preparing, {{ active_breakdown.delivering }} delivering</p>
+                    </div>
                 </div>
-
-                
-
-                
-
-                
-            <div class="bg-white p-6 rounded-lg shadow-sm max-w-2xl mx-auto" style=""><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"><div class="bg-white p-6 rounded-lg shadow-sm"><h3 class="text-lg font-semibold mb-2">Total Orders</h3><p class="text-3xl font-bold text-custom">284</p><p class="text-sm text-gray-600 mt-2">+12% from last week</p></div><div class="bg-white p-6 rounded-lg shadow-sm"><h3 class="text-lg font-semibold mb-2">Revenue</h3><p class="text-3xl font-bold text-custom">$5,847</p><p class="text-sm text-gray-600 mt-2">+8% from last week</p></div><div class="bg-white p-6 rounded-lg shadow-sm"><h3 class="text-lg font-semibold mb-2">Average Rating</h3><p class="text-3xl font-bold text-custom">4.8</p><div class="flex text-yellow-400 mt-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div></div><div class="bg-white p-6 rounded-lg shadow-sm"><h3 class="text-lg font-semibold mb-2">Active Orders</h3><p class="text-3xl font-bold text-custom">12</p><p class="text-sm text-gray-600 mt-2">4 preparing, 8 delivering</p></div></div><div class="mt-8"><h3 class="text-xl font-semibold mb-4">Recent Orders</h3><div class="bg-white rounded-lg shadow-sm overflow-hidden"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Items</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><tr><td class="px-6 py-4 whitespace-nowrap">#12345</td><td class="px-6 py-4">John Doe</td><td class="px-6 py-4">2x Burger, 1x Fries</td><td class="px-6 py-4">$25.99</td><td class="px-6 py-4"><span class="px-2 py-1 text-sm rounded-full bg-green-100 text-green-800">Delivered</span></td></tr><tr><td class="px-6 py-4 whitespace-nowrap">#12344</td><td class="px-6 py-4">Jane Smith</td><td class="px-6 py-4">1x Pizza, 2x Coke</td><td class="px-6 py-4">$32.50</td><td class="px-6 py-4"><span class="px-2 py-1 text-sm rounded-full bg-yellow-100 text-yellow-800">Preparing</span></td></tr><tr><td class="px-6 py-4 whitespace-nowrap">#12343</td><td class="px-6 py-4">Mike Johnson</td><td class="px-6 py-4">3x Tacos, 1x Salad</td><td class="px-6 py-4">$28.75</td><td class="px-6 py-4"><span class="px-2 py-1 text-sm rounded-full bg-blue-100 text-blue-800">Delivering</span></td></tr></tbody></table></div></div></div><div class="space-y-4 mb-8" style="display: none;"><div class="bg-white rounded-lg shadow-sm p-6"><div class="mb-6"><div class="relative w-full h-[400px] rounded-lg overflow-hidden"><img src="https://ai-public.creatie.ai/gen_page/map-placeholder.png" alt="Map" class="w-full h-full object-cover"/><div class="absolute top-4 left-4 bg-white p-3 rounded-lg shadow-md"><div class="flex items-center space-x-3"><img src="https://ai-public.creatie.ai/gen_page/delivery-avatar.png" alt="Delivery Partner" class="w-12 h-12 rounded-full"/><div><p class="font-medium">John Smith</p><p class="text-sm text-gray-600">Your Delivery Partner</p></div></div><div class="mt-2"><div class="flex items-center text-sm text-gray-600"><i class="fas fa-motorcycle mr-2"></i>10 minutes away</div><div class="flex items-center text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt mr-2"></i>2.5 km from your location</div></div></div></div></div><div class="flex justify-between items-center"><button class="bg-custom hover:bg-custom/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"><i class="fas fa-phone mr-2"></i>Call Driver</button><button class="border border-custom text-custom hover:bg-custom/10 px-4 py-2 rounded-lg text-sm font-medium flex items-center"><i class="fas fa-comment mr-2"></i>Send Message</button></div></div></div></div>
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold mb-4">Recent Orders</h3>
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                       <!-- ... (other parts of the template) -->
+<table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+        <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+        </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+        {% for order in recent_orders %}
+        <tr>
+            <td class="px-6 py-4 whitespace-nowrap">{{ order.order_id }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ order.customer_name }}</td>
+            <td class="px-6 py-4">{{ order.order_items|join(', ') }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">${{ "%.2f"|format(order.total) }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="{{ order.status_class }} px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                    {{ order.status }}
+                </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+                    </div>
+                </div>
+                <div class="space-y-4 mb-8" style="display: none;">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="mb-6">
+                            <div class="relative w-full h-[400px] rounded-lg overflow-hidden">
+                                <img src="https://ai-public.creatie.ai/gen_page/map-placeholder.png" alt="Map" class="w-full h-full object-cover"/>
+                                <div class="absolute top-4 left-4 bg-white p-3 rounded-lg shadow-md">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="https://ai-public.creatie.ai/gen_page/delivery-avatar.png" alt="Delivery Partner" class="w-12 h-12 rounded-full"/>
+                                        <div>
+                                            <p class="font-medium">John Smith</p>
+                                            <p class="text-sm text-gray-600">Your Delivery Partner</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <div class="flex items-center text-sm text-gray-600">
+                                            <i class="fas fa-motorcycle mr-2"></i>10 minutes away
+                                        </div>
+                                        <div class="flex items-center text-sm text-gray-600 mt-1">
+                                            <i class="fas fa-map-marker-alt mr-2"></i>2.5 km from your location
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <button class="bg-custom hover:bg-custom/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                                <i class="fas fa-phone mr-2"></i>Call Driver
+                            </button>
+                            <button class="border border-custom text-custom hover:bg-custom/10 px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                                <i class="fas fa-comment mr-2"></i>Send Message
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
     </div>
 
     <footer class="bg-[#E5B3B3]">
@@ -48,5 +132,5 @@
             </nav>
         </div>
     </footer>
-
-</body></html>
+</body>
+</html>
