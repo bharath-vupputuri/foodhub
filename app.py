@@ -9,206 +9,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import datetime,timedelta
 import google.generativeai as genai
-# PersonalDetails class
-class PersonalDetails:
-    def __init__(self, id, name, email, phone, address, created_at=None):
-        self.id = id
-        self.name = name
-        self.email = email
-        self.phone = phone
-        self.address = address
-        self.created_at = created_at or datetime.utcnow().isoformat()
 
-    def to_dict(self):
-        return {
-            "name": self.name,
-            "email": self.email,
-            "phone": self.phone,
-            "address": self.address,
-            "created_at": self.created_at
-        }
-
-    @staticmethod
-    def from_dict(doc_id, data):
-        return PersonalDetails(
-            id=doc_id,
-            name=data["name"],
-            email=data["email"],
-            phone=data["phone"],
-            address=data["address"],
-            created_at=data.get("created_at", datetime.utcnow().isoformat())
-        )
-@app.route("/submit", methods=["POST"])
-def submit_details():
-    """Handle form submission for new personal details."""
-    if not db:
-        flash("Database connection not initialized", "danger")
-        return redirect(url_for("index"))
-    
-    try:
-        data = request.form
-        validate_form_data(data)
-        
-        # Check for duplicate email
-        email_query = db.collection("personal_details")\
-            .where(filter=firestore.FieldFilter("email", "==", data["email"]))\
-            .limit(1).stream()
-        if any(doc.exists for doc in email_query):
-            flash("Email already exists", "danger")
-            return redirect(url_for("index"))
-
-        # Create new entry
-        details_ref = db.collection("personal_details").document()
-        new_details = PersonalDetails(
-            id=details_ref.id,
-            name=data["name"],
-            email=data["email"],
-            phone=data["phone"],
-            address=data["address"]
-        )
-        details_ref.set(new_details.to_dict())
-        flash("Personal details added successfully", "success")
-        logger.info(f"Added personal details: {data['email']}")
-        return redirect(url_for("index"))
-    except BadRequest as e:
-        flash(str(e), "danger")
-        return redirect(url_for("index"))
-    except Exception as e:
-        logger.error(f"Error adding personal details: {str(e)}")
-        flash(f"Error: {str(e)}", "danger")
-        return redirect(url_for("index"))
-
-@app.route("/edit/<id>", methods=["GET", "POST"])
-def edit_details(id):
-    """Render edit form and handle updates."""
-    if not db:
-        flash("Database connection not initialized", "danger")
-        return redirect(url_for("index"))
-
-    try:
-        details_ref = db.collection("personal_details").document(id)
-        details_doc = details_ref.get()
-        if not details_doc.exists:
-            flash("Record not found", "danger")
-            return redirect(url_for("index"))
-
-        details = PersonalDetails.from_dict(id, details_doc.to_dict())
-
-        if request.method == "GET":
-            return render_template("edit.html", details=details)
-
-        # Handle POST (update)
-        data = request.form
-        validate_form_data(data)
-
-        # Check for duplicate email (excluding current record)
-        email_query = db.collection("personal_details")\
-            .where(filter=firestore.FieldFilter("email", "==", data["email"]))\
-            .stream()
-        for doc in email_query:
-            if doc.id != id:
-                flash("Email already exists", "danger")
-                return render_template("edit.html", details=details)
-
-        # Update record
-        updated_details = PersonalDetails(
-            id=id,
-            name=data["name"],
-            email=data["email"],
-            phone=data["phone"],
-            address=data["address"],
-            created_at=details.created_at
-        )
-        details_ref.set(updated_details.to_dict())
-        flash("Personal details updated successfully", "success")
-        logger.info(f"Updated personal details: {data['email']}")
-        return redirect(url_for("index"))
-    except BadRequest as e:
-        flash(str(e), "danger")
-        return render_template("edit.html", details=details)
-    except Exception as e:
-        logger.error(f"Error updating personal details {id}: {str(e)}")
-        flash(f"Error: {str(e)}", "danger")
-        return render_template("edit.html", details=details)
-
-@app.route("/delete/<id>", methods=["POST"])
-def delete_details(id):
-    """Delete a personal details record."""
-    if not db:
-        flash("Database connection not initialized", "danger")
-        return redirect(url_for("index"))
-
-    try:
-        details_ref = db.collection("personal_details").document(id)
-        if not details_ref.get().exists:
-            flash("Record not found", "danger")
-            return redirect(url_for("index"))
-
-        details_ref.delete()
-        flash("Personal details deleted successfully", "success")
-        logger.info(f"Deleted personal details: {id}")
-        return redirect(url_for("index"))
-    except Exception as e:
-        logger.error(f"Error deleting personal details {id}: {str(e)}")
-        flash(f"Error: {str(e)}", "danger")
-        return redirect(url_for("index"))
-
-# API Routes (for potential React integration)
-@app.route("/api/personal-details", methods=["GET"])
-def get_all_details():
-    """API to fetch all personal details."""
-    if not db:
-        return jsonify({"success": False, "message": "Database connection not initialized"}), 503
-    
-    try:
-        details_ref = db.collection("personal_details").order_by("created_at", direction=firestore.Query.DESCENDING).stream()
-        details = [{"id": doc.id, **doc.to_dict()} for doc in details_ref]
-        return jsonify({"success": True, "data": details}), 200
-    except Exception as e:
-        logger.error(f"Error fetching API personal details: {str(e)}")
-        return jsonify({"success": False, "message": str(e)}), 500
-
-@app.route("/api/personal-details", methods=["POST"])
-def api_submit_details():
-    """API to submit new personal details."""
-    if not db:
-        return jsonify({"success": False, "message": "Database connection not initialized"}), 503
-    
-    try:
-        data = request.json
-        validate_form_data(data)
-        
-        email_query = db.collection("personal_details")\
-            .where(filter=firestore.FieldFilter("email", "==", data["email"]))\
-            .limit(1).stream()
-        if any(doc.exists for doc in email_query):
-            return jsonify({"success": False, "message": "Email already exists"}), 400
-
-        details_ref = db.collection("personal_details").document()
-        new_details = PersonalDetails(
-            id=details_ref.id,
-            name=data["name"],
-            email=data["email"],
-            phone=data["phone"],
-            address=data["address"]
-        )
-        details_ref.set(new_details.to_dict())
-        logger.info(f"API added personal details: {data['email']}")
-        return jsonify({"success": True, "message": "Details added", "id": details_ref.id}), 201
-    except BadRequest as e:
-        return jsonify({"success": False, "message": str(e)}), 400
-    except Exception as e:
-        logger.error(f"Error adding API personal details: {str(e)}")
-        return jsonify({"success": False, "message": str(e)}), 500
-# Validate form data
-def validate_form_data(data):
-    required_fields = ["name", "email", "phone", "address"]
-    for field in required_fields:
-        if not data.get(field) or not data[field].strip():
-            raise BadRequest(f"{field.capitalize()} is required")
-    if "@" not in data.get("email", ""):
-        raise BadRequest("Invalid email format")
-    return True
 
 GEMINI_API_KEY = "AIzaSyBkCxP-RwWc4-qqBfFvJ9HKxlBLlgN4g2w"
 genai.configure(api_key=GEMINI_API_KEY)
@@ -220,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 # Flask App Configuration
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://food_qrdm_user:CTko1Zh2X1NrX0pkr5N6sY9U6rX6SHLc@dpg-d00tkk24d50c73clcs50-a/food_qrdm'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://food_axf0_user:5vh2fKYWiKV6T0F8PtkYIhrga4iMVPBU@dpg-d019l6ili9vc73875m70-a.oregon-postgres.render.com/food_axf0'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -1050,6 +851,53 @@ def remove_from_cart(cart_id):
     return redirect(url_for('cart'))
 
 # Create Database Tables if They Don't Exist
+# New Personal Details Route
+@app.route('/personal_details', methods=['GET', 'POST'])
+@login_required
+def personal_details():
+    form = PersonalDetailsForm()
+    user = User.query.get(current_user.id)
+    
+    if request.method == 'POST' and form.validate_on_submit():
+        try:
+            # Check if email or phone is already taken by another user
+            existing_email = User.query.filter(User.email == form.email.data.lower(), User.id != user.id).first()
+            existing_phone = User.query.filter(User.phone == form.phone.data, User.id != user.id).first()
+            
+            if existing_email:
+                flash('This email is already registered.', 'danger')
+                return render_template('personal_details.html', form=form)
+            
+            if existing_phone:
+                flash('This phone number is already registered.', 'danger')
+                return render_template('personal_details.html', form=form)
+            
+            # Update user details
+            user.name = form.name.data
+            user.email = form.email.data.lower()
+            user.phone = form.phone.data
+            db.session.commit()
+            flash('Personal details updated successfully!', 'success')
+            return redirect(url_for('personal_details'))
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f'Error updating personal details: {e}')
+            flash('An error occurred while updating your details.', 'danger')
+    
+    # Populate form with current user details for GET request
+    form.name.data = user.name
+    form.email.data = user.email
+    form.phone.data = user.phone
+    
+    return render_template('personal_details.html', form=form)
+# New Personal Details Form
+class PersonalDetailsForm(FlaskForm):
+    name = StringField('Full Name', validators=[InputRequired(), Length(min=4, max=50)])
+    email = StringField('Email', validators=[InputRequired(), Email(), Length(max=100)])
+    phone = StringField('Phone Number', validators=[
+        InputRequired(), Length(min=10, max=15), Regexp(r'^\d+$', message="Phone number must contain only digits.")
+    ])
+    submit = SubmitField('Save Changes')
 if __name__ == '__main__':
     if not os.path.exists("users.db"):
         with app.app_context():
